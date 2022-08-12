@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>REST-Server with Node.js</title>
+  <link rel="shortcut icon" href="./assets/formato-js.png" type="image/x-icon">
+</head>
+<body>
+  <h1>Google SignIn</h1>
+  <hr/>
+
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <div id="g_id_onload"
+       data-client_id="430698755430-0pjsarfe3pj9lbges28sf5k1j4feqjro.apps.googleusercontent.com"
+       data-callback="handleCredentialResponse">
+  </div>
+  <div class="g_id_signin"
+       data-type="standard"
+       data-size="large"
+       data-theme="outline"
+       data-text="sign_in_with"
+       data-shape="rectangular"
+       data-logo_alignment="left">
+  </div>
+
+  <button id="google_logout">
+    Logout
+  </button>
+  
+  <script>
+    function handleCredentialResponse(response) {
+       
+      // console.log(response.credential);
+      const body = {id_token: response.credential}
+
+      console.log(body);
+      fetch('http://localhost:8080/api/auth/google',{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body)
+      })
+      .then(resp => resp.json())
+      .then(resp => {
+        console.log(resp);
+        localStorage.setItem('token', resp.token);
+      })
+      .catch(err => console.log(err))
+    }
+
+    const button = document.getElementById('google_logout');
+    button.onclick = () =>{
+      google.accounts.id.disableAutoSelect();
+
+      google.accounts.id.revoke(localStorage.getItem('token'), done => {
+        localStorage.clear();
+        location.reload();
+      });
+
+
+    }
+  </script>
+  </body>
+</html>
