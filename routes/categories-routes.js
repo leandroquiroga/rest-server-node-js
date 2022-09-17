@@ -3,7 +3,7 @@ const {check} = require('express-validator');
 
 const { validationField } = require('../middlewares/validatorError');
 const { validatorJWT } = require('../middlewares/validatorJWT');
-const { categoryIDExist } = require('../helpers/db-validators');
+const { categoryIDExist } = require('../utils/db-validators');
 
 const { getCategories, 
         getCategoryByID, 

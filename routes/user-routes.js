@@ -9,7 +9,7 @@ const {
   userPost,
   userPut
 } = require('../controllers/user-controllers');
-const { roleValidator, emailValidator, userValidatorByID } = require('../helpers/db-validators');
+const { roleValidator, emailValidator, userValidatorByID } = require('../utils/db-validators');
 const { validatorJWT } = require('../middlewares/validatorJWT');
 const { validationField } = require('../middlewares/validatorError');
 const { isAdminRole, haveRole } = require('../middlewares/validatorRole');
